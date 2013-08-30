@@ -112,5 +112,4 @@ void loop() {
       writeNbrDec((tempInt - ((tempInt / 10000) * 10000)) / 1000, 3, false);
       delay(updatePeriod);   
   }
-  writeNbrDec(0, 4, false);
 }
