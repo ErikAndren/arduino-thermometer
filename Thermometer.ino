@@ -58,6 +58,8 @@ void writeNbrDec(int nbr, int dec, boolean lightDp) {
   }
 }
 
+DeviceAddress deviceAddress;
+
 void writeNbr(int nbr, boolean lightDp) {
   if (nbr < 0 || nbr > 9) {
     return;
@@ -90,13 +92,14 @@ void setup() {
   
   sensors.requestTemperatures();
   sensors.setWaitForConversion(false);
+  sensors.getAddress(deviceAddress, 0);
 }
 
 const byte display[4] = { 1, 3, 3, 7 };
 
 void loop() {
   //Display the old value, to avoid needing to block for the conversion to take place
-  float tempFloat = sensors.getTempCByIndex(0);
+  float tempFloat = sensors.getTempC(deviceAddress);
   sensors.requestTemperatures();
   int tempInt = (int) (tempFloat * 100);
 
