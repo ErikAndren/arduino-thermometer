@@ -87,13 +87,17 @@ void setup() {
   for (int i = decPinOffs; i < 4; i++) {
     pinMode(i, OUTPUT);
   }
+  
+  sensors.requestTemperatures();
+  sensors.setWaitForConversion(false);
 }
 
 const byte display[4] = { 1, 3, 3, 7 };
 
 void loop() {
-  sensors.requestTemperatures();
+  //Display the old value, to avoid needing to block for the conversion to take place
   float tempFloat = sensors.getTempCByIndex(0);
+  sensors.requestTemperatures();
   int tempInt = (int) (tempFloat * 100);
 
   for (int i = 0; i < updatesPerPeriod / 2; i++) {
