@@ -69,9 +69,10 @@ void writeNbr(int nbr, boolean lightDp) {
   PORTD = seven_seg_digits_port[nbr];
 
   if (lightDp == true) {
-     digitalWrite(segDP, HIGH); 
+    PORTD = 0b10000000 | PORTD;
   } else {
-    digitalWrite(segDP, LOW);
+    //Clear bit 7
+    PORTD &= ~(1 << 7);
   }
 }
 
