@@ -31,18 +31,18 @@ const int periodSlice = period / activeDecs;
 const int updatePeriod = periodSlice / updateFreq;
 const int updatesPerPeriod = period / updatePeriod;
 
-const byte seven_seg_digits[10][7] = { { 1,1,1,1,1,1,0 },  // = 0
-                                 { 0,1,1,0,0,0,0 },  // = 1
-                                 { 1,1,0,1,1,0,1 },  // = 2
-                                 { 1,1,1,1,0,0,1 },  // = 3
-                                 { 0,1,1,0,0,1,1 },  // = 4
-                                 { 1,0,1,1,0,1,1 },  // = 5
-                                 { 1,0,1,1,1,1,1 },  // = 6
-                                 { 1,1,1,0,0,0,0 },  // = 7
-                                 { 1,1,1,1,1,1,1 },  // = 8
-                                 { 1,1,1,0,0,1,1 }   // = 9
-                               };
-                               
+const byte seven_seg_digits_port[10] = {0b00111111, // 0
+                                            0b00000110, // 1
+                                            0b01011011, // 2
+                                            0b01001111, // 3
+                                            0b01100110, // 4
+                                            0b01101101, // 5
+                                            0b01111101, // 6
+                                            0b00000111, // 7
+                                            0b01111111, // 8
+                                            0b01100111  // 9
+                                      };
+
 byte dec_array[5][4] = {
   {0, 0, 0, 1},
   {0, 0, 1, 0},
@@ -53,6 +53,7 @@ byte dec_array[5][4] = {
                             
 void writeNbrDec(int nbr, int dec, boolean lightDp) {
   writeNbr(nbr, lightDp);
+
   for (int i = 0; i < activeDecs; i++) {
     digitalWrite(i + decPinOffs, dec_array[dec][i]);
   }
@@ -65,10 +66,8 @@ void writeNbr(int nbr, boolean lightDp) {
     return;
   }
  
-  //Using digital pins 2 to 8
-  for (int i = 0; i < 7; i++) {
-     digitalWrite(i + segPinOffs, seven_seg_digits[nbr][i]); 
-  }
+  PORTD = seven_seg_digits_port[nbr];
+
   if (lightDp == true) {
      digitalWrite(segDP, HIGH); 
   } else {
